@@ -9,7 +9,7 @@ export const CurrencyProvider = (props) => {
   useEffect(() => {
     const getCurrency = async () => {
       const  {data}  = await axios.get('http://localhost:5000/data');
-      data[0].rates.push({code : 'PLN', mid: 1.00});
+      data[0].rates.push({currency: 'Polski złoty', code : 'PLN', mid: 1.00});
       setCurrency(data[0].rates.filter((element) => element.code !== "XDR"));
     };
     getCurrency();

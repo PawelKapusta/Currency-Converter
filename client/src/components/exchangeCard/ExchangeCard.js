@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
       height: theme.spacing(70),
     },
   },
-  title :{
+  title: {
     marginTop: 35,
     marginLeft: 45,
     fontSize: 40
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(3),
     backgroundColor: theme.palette.background.paper,
   },
-  listItem:{
+  listItem: {
     marginBottom: 5
   },
   input: {
@@ -54,6 +54,10 @@ const useStyles = makeStyles((theme) => ({
   },
   financial: {
     fontSize: 21
+  },
+  currencyName: {
+    marginLeft: 10,
+    fontSize: 15
   }
 }));
 
@@ -65,6 +69,7 @@ const ExchangeCard = () => {
      'RU', 'ID', 'IN', 'KR', 'CN', 'PL'];
   const classes = useStyles();
   const {currency} = useContext(CurrencyContext);
+  console.log("ccc", currency)
   const [firstCurrency, setFirstCurrency] = useState('');
   const [secondCurrency, setSecondCurrency] = useState('');
   const [firstIndex, setFirstIndex] = useState(0);
@@ -90,13 +95,15 @@ const ExchangeCard = () => {
   };
   const calculateFirstCurrency = (value) => {
     setSecondCurrency(value);
-    setFirstCurrency(String((currency[secondIndex].mid / currency[firstIndex].mid).toFixed(5) * value));
+    setFirstCurrency(String((currency[secondIndex].mid / currency[firstIndex].mid).toFixed(4) * value ));
   }
   const calculateSecondCurrency = (value) => {
     setFirstCurrency(value);
-    setSecondCurrency(String((currency[firstIndex].mid / currency[secondIndex].mid).toFixed(5) * value));
+    setSecondCurrency(String((currency[firstIndex].mid / currency[secondIndex].mid).toFixed(4) * value));
   }
-
+ const firstLetterToUpperCase = (string) => {
+    return string[0].toUpperCase() + string.slice(1);
+ }
   return (
    <div className={classes.root}>
      <Paper elevation={3}>
@@ -105,7 +112,8 @@ const ExchangeCard = () => {
          <ListItem className={classes.listItem}>
            <InputLabel className={classes.label}>You send</InputLabel>
          </ListItem>
-         <Button className={classes.button} aria-controls="simple-menu" aria-haspopup="true"  startIcon={<AttachMoneyIcon/>} color="primary" variant="outlined" onClick={handleClick}>
+         <Button className={classes.button} aria-controls="simple-menu" aria-haspopup="true"
+                 startIcon={<AttachMoneyIcon/>} color="primary" variant="outlined" onClick={handleClick}>
            Choose Currency
          </Button>
          <Menu
@@ -116,7 +124,7 @@ const ExchangeCard = () => {
           onClose={handleClose}
          >
            {countryCode.map((code, index) =>
-            <MenuItem  key={code} onClick={() => {
+            <MenuItem key={code} onClick={() => {
               setFirstIndex(index);
               handleClose();
             }}>
@@ -129,6 +137,8 @@ const ExchangeCard = () => {
                }}
                title={code}
               />
+              <h5 className={classes.currencyName}>{!currency ?
+               <CircularProgress/> : currency[index].currency.includes('(') ? firstLetterToUpperCase(currency[index].currency.substr(0, currency[index].currency.indexOf('('))) : firstLetterToUpperCase(currency[index].currency)}</h5>
             </MenuItem>
            )}
          </Menu>
@@ -160,7 +170,8 @@ const ExchangeCard = () => {
          <ListItem>
            <InputLabel className={classes.label}>They receive</InputLabel>
          </ListItem>
-         <Button className={classes.button} aria-controls="menu" aria-haspopup="true" startIcon={<AttachMoneyIcon/>} color="primary" variant="outlined" onClick={handleClick2}>
+         <Button className={classes.button} aria-controls="menu" aria-haspopup="true" startIcon={<AttachMoneyIcon/>}
+                 color="primary" variant="outlined" onClick={handleClick2}>
            Choose Currency
          </Button>
          <Menu
@@ -170,9 +181,9 @@ const ExchangeCard = () => {
           open={Boolean(anchorEl2)}
           onClose={handleClose2}
          >
-           {countryCode.map((code, index2) =>
+           {countryCode.map((code, index) =>
             <MenuItem key={code} onClick={() => {
-              setSecondIndex(index2);
+              setSecondIndex(index);
               handleClose2();
             }}>
               <ReactCountryFlag
@@ -184,6 +195,8 @@ const ExchangeCard = () => {
                }}
                title={code}
               />
+              <h5 className={classes.currencyName}>{!currency ?
+               <CircularProgress/> : currency[index].currency.includes('(') ? firstLetterToUpperCase(currency[index].currency.substr(0, currency[index].currency.indexOf('('))) : firstLetterToUpperCase(currency[index].currency)}</h5>
             </MenuItem>
            )}
          </Menu>
@@ -212,8 +225,9 @@ const ExchangeCard = () => {
              <CircularProgress/> : currency[secondIndex].code}</b></InputAdornment>}
            />
          </ListItem>
-         <ListItem> <label className={classes.financial}>1 {!currency ? <CircularProgress/> : currency[firstIndex].code} = <b> {!currency ?
-          <CircularProgress/> : (currency[firstIndex].mid / currency[secondIndex].mid).toFixed(5)} </b> {!currency ?
+         <ListItem> <label className={classes.financial}>1 {!currency ?
+          <CircularProgress/> : currency[firstIndex].code} = <b> {!currency ?
+          <CircularProgress/> : (currency[firstIndex].mid / currency[secondIndex].mid).toFixed(4)} </b> {!currency ?
           <CircularProgress/> : currency[secondIndex].code}</label></ListItem>
          <ListItem><InputLabel><b>No transfer fee</b></InputLabel></ListItem>
        </List>
