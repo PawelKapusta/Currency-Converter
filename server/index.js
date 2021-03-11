@@ -14,6 +14,7 @@ app.get('/', (req,res) => {
   res.write('<html><body><p>This is server side.</p></body></html>');
   res.end();
 })
+
 async function getFromAPI() {
   let data = '';
     await axios.get(API_URL).then((result) => data =  result.data);
@@ -42,6 +43,10 @@ app.get('/data', (req, res) => {
 app.listen(5000, () => {
   console.log('Running on port 5000');
 });
+
+
+
+
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
