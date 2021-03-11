@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://src/index.css"],"names":[],"mappings":"AAAA,KACE,kBAAmB,CAEnB,iDAGF","file":"main.fd048c34.chunk.css","sourcesContent":["body{\r\n  background: #E0EAFC;\r\n  background: -webkit-linear-gradient(to right, #CFDEF3, #E0EAFC);\r\n  background: linear-gradient(to right, #CFDEF3, #E0EAFC);\r\n\r\n\r\n}"]}
