@@ -22,6 +22,9 @@ async function getFromAPI() {
 
 }
 
+
+
+
 app.get('/data', (req, res) => {
   console.log("1")
   let data = ''
